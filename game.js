@@ -1,7 +1,7 @@
 // Объект героя с начальными значениями
 const hero = {
     level: 1,
-    health: 100,
+    health: 1,
     damage: 20,
     defend: 5,
     dexterity: 5,
