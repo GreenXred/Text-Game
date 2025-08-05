@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text game</title>
+    <link rel="stylesheet" href="./styles/common.css">
+    <link rel="stylesheet" href="./styles/game.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+      
+</head>
+
+<body>
+
+    <h1 class="main-title">Текстовая RPG игра</h1>
+    <div class="grid-container">
+        <div class="characteristic-panel column">
+            <h1 class="hero-title">Ваш герой</h1>
+            <div class="level-hero">Уровень </div>
+            <div class="characteristic-view">
+                <div class="health">Здоровье: </div>
+                <div class="damage">Урон: </div>
+                <div class="defend">Защита: </div>
+                <div class="dexterity">Ловкость: </div>
+            </div>
+            <h1 class="hero-inventory">Инвентарь</h1>
+            <div class="inventory-view">
+                <div class="health-potions">Зелье здоровья: </div>
+                <div class="damage-potions">Зелье урона: </div>
+                <div class="defend-potions">Зелье защиты: </div>
+                <div class="dexterity-potions">Зелье ловкости: </div>
+            </div>
+            <button class="restart-button">Начать прохождение заново</button>
+        </div>
+        <div class="game-panel column">
+            <div class="game-elements">
+                <div class="text-log">
+                    <div class="current-events-log">
+                        Вы сын обычного фермера. Вы обречены на жизнь среди навоза и грязи, а ваше спальное место,
+                        это куча подложенной соломы. Так жили твои предки много поколений. Тебе никогда не светит жизнь
+                        среди знати
+                        и сон в уютной, теплой и чистой пастели. Казалось, что ты так и проживешь свою жизнь среди
+                        свиней и коз
+                        до конца своих дней. Но в отличии от своих дедов, у тебя есть желание и амбиции на лучшую жизнь.
+                        Я сын фермера, таких в городах не берут даже в подмастерья подметать полы. Значит, я должен
+                        найти свой путь!
+                        Я собрал немного запасов еды и прихватил старое бабкино зелье, она уверяла, что он придает сил.
+                        Я отправлюсь
+                        на поиски лучшей жизни. Кто знает, что меня ждет? Слава и богатство или глупая смерть? Но я
+                        должен попытаться!
+                        Я покинул деревню поздно ночью, чтобы меня не заметили. Куда же мне теперь направиться...
+                    </div>
+                </div>
+                <div class="low-game-panel">
+                    <div class="locations">
+                        <div class="location-select">
+                            <div class="current-location">Текущая локация: Деревня</div>
+                            <button class="button-forest">Пойти в лес</button>
+                            <button class="button-dungeon">Уйти в подземелье</button>
+                            <button class="button-cemetery">Отправиться на кладбище</button>
+                            <div class="locations-buttons"></div>
+                        </div>
+                    </div>
+                    <div class="actions-buttons">
+                        <div class="available-actions">Доступные действия</div>
+                        <button class="attack-button">Атаковать</button>
+                        <button class="defend-button">Защищаться</button>
+                        <button class="escape-button">Сбежать из боя</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="enemy-panel column">
+            <div class="enemy-view">
+                <h1 class="enemy-title">Враг</h1>
+                <div class="enemy-characteristic">
+                    <div class="enemy-type">Противник: </div>
+                    <div class="enemy-health">Здоровье: </div>
+                    <div class="enemy-damage">Урон: </div>
+                    <div class="enemy-defend">Защита: </div>
+                    <div class="enemy-dexterity">Ловкость: </div>
+                    <h1 class="action-result">Результат дейсвтия: </h1>
+                    <div class="action-hint"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="./game.js"></script>
+</body>
+
+</html>
