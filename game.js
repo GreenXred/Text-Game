@@ -1,7 +1,7 @@
 // Объект героя с начальными значениями
 const hero = {
     level: 1,
-    health: 1,
+    health: 100,
     damage: 20,
     defend: 5,
     dexterity: 5,
@@ -576,6 +576,8 @@ document.querySelector('.restart-button').addEventListener('click', () => {
     document.querySelector('.attack-button').disabled = false;
     document.querySelector('.defend-button').disabled = false;
     document.querySelector('.escape-button').disabled = false;
+    document.querySelectorAll('.location-button, .button-forest, .button-dungeon, .button-cemetery').forEach(btn => btn.disabled = false);
+
 
     document.querySelector('.enemy-type').textContent = '';
     document.querySelector('.enemy-health').textContent = '';
