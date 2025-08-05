@@ -7,7 +7,7 @@ const hero = {
     dexterity: 5,
     inventory: {
         healthPotions: 1,
-        damagePotions: 100,
+        damagePotions: 0,
         defendPotions: 0,
         dexterityPotions: 0,
 
