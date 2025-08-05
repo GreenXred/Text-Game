@@ -7,7 +7,7 @@ const hero = {
     dexterity: 5,
     inventory: {
         healthPotions: 1,
-        damagePotions: 0,
+        damagePotions: 100,
         defendPotions: 0,
         dexterityPotions: 0,
 
@@ -113,8 +113,8 @@ const locations = [
         type: 'event',
         repeatable: false,
         effect: () => {
-            hero.health += 35;
             hero.inventory.healthPotions++;
+            healHero(35);
             updateHeroView();
             logEvent(`
                 Издалека раздавались удары колокола. Вы пошли на звон и обнаружили отдаленный небольшой монастырь. 
@@ -253,6 +253,7 @@ const locations = [
         type: 'battle',
         enemy: getEnemyByName('Старая каннибалиха'),
         repeatable: false,
+        doubleLevel: true,
         effect: () => {
             logEvent(`
                 Идя в лесу, вы обнаруживаете палатку, а близ нее большой круглый чан. Приблизившись, вы никого не замечаете.
@@ -284,7 +285,7 @@ const locations = [
         type: 'event',
         repeatable: false,
         effect: () => {
-            hero.health += 20;
+            healHero(20);
             updateHeroView();
             logEvent(`
                 Вы поднимаетесь на холм и видите неподалеку стоит ветхая изба. Приблизившись к избе, оттуда выходит старушка и громко радостно произносит:
@@ -510,6 +511,12 @@ document.querySelector('.dexterity-potions').addEventListener('click', () => {
     }
 });
 
+// Функции для восполнения здоровья (удобно для ивентов)
+function healHero(amount) {
+    hero.health = Math.min(100, hero.health + amount);
+    updateHeroView();
+}
+
 // Обработчик для леса
 document.querySelector('.button-forest').addEventListener('click', () => {
     handleLocation({
@@ -591,6 +598,7 @@ document.querySelector('.restart-button').addEventListener('click', () => {
 let currentEnemy = null;
 let isBattleActive = false;
 let isWaiting = false;
+let pendingLevelUps = 1; // Подсчет количества уровней, которые нужно повысить
 baseHeroStats = {
     damage: hero.damage,
     defend: hero.defend,
@@ -643,7 +651,7 @@ function logEvent(text) {
 
 
 // Начало боя
-function startBattle(enemy) {
+function startBattle(enemy, doubleLevel = false) {
     currentEnemy = { ...enemy }; // копия объекта, чтобы не менять оригинал
     isBattleActive = true;
     pendingLevelUps = doubleLevel ? 2 : 1; // если двойное повышение уровня, то 2 два срабатывания level++, иначе 1
@@ -656,6 +664,7 @@ function startBattle(enemy) {
     document.querySelector('.enemy-dexterity').textContent = `Ловкость: ${enemy.dexterity}`;
 
     logEvent(`Вы встретили ${colorText(enemy.name, 'type-enemy-text')}!`);
+
     baseHeroStats = {
         damage: hero.damage,
         defend: hero.defend,
@@ -771,7 +780,6 @@ function enemyTurn() {
 function endBattle(heroWon) {
     isBattleActive = false;
     currentEnemy = null;
-    let pendingLevelUps = 1;
 
     hero.damage = baseHeroStats.damage;
     hero.defend = baseHeroStats.defend;
@@ -782,7 +790,6 @@ function endBattle(heroWon) {
 
     if (heroWon) {
         logEvent('Вы победили! Отправляйтесь дальше');
-        levelUp();
 
         const potionTypes = ['health', 'damage', 'defend', 'dexterity'];
         const dropped = potionTypes[Math.floor(Math.random() * potionTypes.length)]; // рандомно выбираем тип зелья за победу
@@ -813,22 +820,16 @@ function endBattle(heroWon) {
         document.querySelector('.attack-button').disabled = true;
         document.querySelector('.defend-button').disabled = true;
         document.querySelector('.escape-button').disabled = true;
+        document.querySelector('.locations-buttons').innerHTML = '';
 
         logEvent('Вы погибли...');
+        return;
     }
 
     for (let i = 0; i < pendingLevelUps; i++) {
         levelUp();
     }
     pendingLevelUps = 1;
-
-    if (hero.level >= 20) {
-        disableAllButtons();
-        logEvent("Несколько лет вы уже скитаетесь по стране..." /* финальный текст */);
-    } else {
-        renderAvailableLocations();
-    }
-
 }
 
 // Окрашиваем в текст-логе касаемо здоровья и урона
@@ -884,11 +885,37 @@ function levelUp() {
     );
 
     updateHeroView();
+
+    // Проверка финала
+    if (hero.level >= 11) {
+        finishGame();
+    }
 }
+
+function finishGame() {
+    logEvent(`
+        Несколько лет вы уже скитаетесь по стране. Вы мастерски владеете мечом, а Вашим шрамам позавидовал бы даже самый матерый ветеран столетней войны. 
+        Вы повидали уже многое и встречали много интересных личностей. Однажды произошел счастливый случай, который положил конец Вашим скитаниям и нищему существованию. 
+        Ваш король со свитой своих лучших стражей отправился в соседние провинции с королевским визитом, но вся свита угодила в засаду, 
+        разбойников было много и многие из них бывшие солдаты. По счастливой случайности, вы шли в лесу недалеко от места засады и услышали звуки сражения. 
+        Увидев королевскую свиту, вы ринулись в бой на защиту короля. Когда бой закончился, почти все королевские стражи были мертвы. 
+        Вы обломили стрелу, которая угодила Вам в плечо и перевели дух. Король никогда не видел бойцов, которые так мастерски владеют боем.
+        Король Вас щедро вознаградил и вы приняли предложение стать капитаном королевских стражей, а так же Вам был выдан титул рыцаря. 
+        Вы перевезли свою семью из деревни в королевский город. Кровью и потом, вы смогли обеспечить себе безбедную жизнь.`);
+    // Блокируем все кнопки
+    document.querySelectorAll('button').forEach(btn => {
+        if (!btn.classList.contains('restart-button')) {
+            btn.disabled = true;
+        }
+    });
+}
+
 
 document.querySelector('.enemy-type').textContent = '';
 document.querySelector('.enemy-health').textContent = '';
 document.querySelector('.enemy-damage').textContent = '';
 document.querySelector('.enemy-defend').textContent = '';
 document.querySelector('.enemy-dexterity').textContent = '';
+
+
 
