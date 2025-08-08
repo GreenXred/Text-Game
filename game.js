@@ -82,6 +82,11 @@ const enemies = [
 
 const usedLocations = [];
 
+// Функция получения врага по его имени
+function getEnemyByName(name) {
+    return enemies.find(e => e.name === name);
+}
+
 const locations = [
     // Повторяемые
     {
@@ -310,12 +315,6 @@ const initialStory = `Вы сын обычного фермера. Вы обре
 Я отправлюсь на поиски лучшей жизни. Кто знает, что меня ждет? Слава и богатство или глупая смерть?
 Но я должен попытаться! Я покинул деревню поздно ночью, чтобы меня не заметили. Куда же мне теперь направиться...`;
 
-
-// Функция получения врага по его имени
-function getEnemyByName(name) {
-    return enemies.find(e => e.name === name);
-}
-
 // Функция отрисовки доступных локаций
 
 let isInitialStage = true;  // Флаг первой выборки локаций
@@ -407,32 +406,32 @@ function takeDamage(damage) {
 
 // Функция получения зелья
 
-function getHealthPotion() {
-    hero.inventory.healthPotions++; // Увеличение количества зелий здоровья на 1
-    updateHeroView();
-}
-function getDefendPotion() {
-    hero.inventory.damagePotions++; // Увеличение количества зелий здоровья на 1
-    updateHeroView();
-}
-function getHealthPotion() {
-    hero.inventory.defendPotions++; // Увеличение количества зелий здоровья на 1
-    updateHeroView();
-}
-function getHealthPotion() {
-    hero.inventory.dexterityPotions++; // Увеличение количества зелий здоровья на 1
-    updateHeroView();
-}
+// function getHealthPotion() {
+//     hero.inventory.healthPotions++; // Увеличение количества зелий здоровья на 1
+//     updateHeroView();
+// }
+// function getDamagePotion() {
+//     hero.inventory.damagePotions++; // Увеличение количества зелий урона на 1
+//     updateHeroView();
+// }
+// function getDefendPotion() {
+//     hero.inventory.defendPotions++; // Увеличение количества зелий защиты на 1
+//     updateHeroView();
+// }
+// function getDexterityPotion() {
+//     hero.inventory.dexterityPotions++; // Увеличение количества зелий ловкости на 1
+//     updateHeroView();
+// }
 
 // Функции применения зелья
 
 function useHealthPotion() {
     if (hero.inventory.healthPotions > 0) {
         hero.health += 25; // Увеличение здоровья героя на 25
-        hero.inventory.healthPotions--; // Уменьшение количества зелий здоровья на 1
         if (hero.health > 100) {
             hero.health = 100; // Чтобы здоровье не было больше 100
         }
+        hero.inventory.healthPotions--; // Уменьшение количества зелий здоровья на 1
     }
     updateHeroView(); // Обновление отображения характеристик
 }
@@ -440,7 +439,7 @@ function useHealthPotion() {
 function useDamagePotion() {
     if (hero.inventory.damagePotions > 0) {
         hero.damage += 10; // Увеличение урона героя на 10
-        hero.inventory.damagePotions--; // Уменьшение количества зелий здоровья на 1
+        hero.inventory.damagePotions--; // Уменьшение количества зелий урона на 1
     }
     updateHeroView(); // Обновление отображения характеристик
 }
@@ -448,7 +447,7 @@ function useDamagePotion() {
 function useDefendPotion() {
     if (hero.inventory.defendPotions > 0) {
         hero.defend += 10; // Увеличение защиты героя на 10
-        hero.inventory.defendPotions--; // Уменьшение количества зелий здоровья на 1
+        hero.inventory.defendPotions--; // Уменьшение количества зелий защиты на 1
     }
     updateHeroView(); // Обновление отображения характеристик
 }
@@ -456,7 +455,7 @@ function useDefendPotion() {
 function useDexterityPotion() {
     if (hero.inventory.dexterityPotions > 0) {
         hero.dexterity *= 2; // Увеличение ловкости героя в 2 раза
-        hero.inventory.dexterityPotions--; // Уменьшение количества зелий здоровья на 1
+        hero.inventory.dexterityPotions--; // Уменьшение количества зелий ловкости на 1
     }
     updateHeroView(); // Обновление отображения характеристик
 }
